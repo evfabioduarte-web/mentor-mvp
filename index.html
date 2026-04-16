@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Mentor de Negócios - MVP Final</title>
+
+<style>
+body{font-family:Arial;margin:0;background:#eef2f5;}
+header{background:#1D4E89;color:#fff;text-align:center;padding:15px;}
+.container{padding:15px;}
+.card{background:#fff;padding:15px;margin-bottom:15px;border-radius:10px;}
+input,select,button{width:100%;padding:10px;margin:5px 0;}
+.step{display:none;}
+.active{display:block;}
+.good{color:green;}
+.warn{color:orange;}
+.bad{color:red;}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>🧠 Mentor de Negócios MVP</h2>
+<p>Simulação + Educação + Viabilidade</p>
+</header>
+
+<div class="container">
+
+<!-- ETAPA 1 -->
+<div class="card step active" id="step1">
+<h3>📥 Etapa 1 - Negócio</h3>
+
+<input id="nome" placeholder="Nome do negócio">
+
+<select id="tipo">
+<option value="produto">Produto</option>
+<option value="servico">Serviço</option>
+<option value="digital">Digital</option>
+</select>
+
+<button onclick="next(2)">Próximo</button>
+</div>
+
+<!-- ETAPA 2 -->
+<div class="card step" id="step2">
+<h3>💰 Etapa 2 - Financeiro</h3>
+
+<input id="custo" type="number" placeholder="Custo por unidade">
+<input id="preco" type="number" placeholder="Preço de venda">
+<input id="vendas" type="number" placeholder="Vendas por dia">
+<input id="fixo" type="number" placeholder="Custos fixos mensais">
+
+<button onclick="next(3)">Simular</button>
+</div>
+
+<!-- ETAPA 3 -->
+<div class="card step" id="step3">
+<h3>📊 Etapa 3 - Resultado</h3>
+<div id="resultado"></div>
+<button onclick="next(4)">Continuar</button>
+</div>
+
+<!-- ETAPA 4 -->
+<div class="card step" id="step4">
+<h3>📘 Etapa 4 - Educação</h3>
+<div id="educacao"></div>
+<button onclick="next(5)">Checklist</button>
+</div>
+
+<!-- ETAPA 5 -->
+<div class="card step" id="step5">
+<h3>📋 Etapa 5 - Checklist</h3>
+<div id="checklist"></div>
+<button onclick="next(6)">Relatório</button>
+</div>
+
+<!-- ETAPA 6 -->
+<div class="card step" id="step6">
+<h3>📄 Etapa 6 - Relatório Final</h3>
+<div id="relatorio"></div>
+
+<button onclick="reset()">Reiniciar Sistema</button>
+</div>
+
+</div>
+
+<script>
+
+// =========================
+// ESTADO GLOBAL
+// =========================
+let dados = {};
+
+// =========================
+// NAVEGAÇÃO ENTRE ETAPAS
+// =========================
+function next(step){
+
+document.querySelectorAll(".step").forEach(s=>{
+s.classList.remove("active");
+});
+
+document.getElementById("step"+step).classList.add("active");
+
+if(step===3) calcular();
+if(step===4) educar();
+if(step===5) checklist();
+if(step===6) relatorio();
+
+}
+
+// =========================
+// RESET CORRIGIDO (IMPORTANTE)
+// =========================
+function reset(){
+
+dados = {};
+
+document.querySelectorAll("input").forEach(i=>i.value="");
+
+document.querySelectorAll(".step").forEach(s=>{
+s.classList.remove("active");
+});
+
+document.getElementById("step1").classList.add("active");
+
+document.getElementById("resultado").innerHTML="";
+document.getElementById("educacao").innerHTML="";
+document.getElementById("checklist").innerHTML="";
+document.getElementById("relatorio").innerHTML="";
+
+}
+
+// =========================
+// CORE FINANCEIRO
+// =========================
+function calcular(){
+
+let nome=document.getElementById("nome").value;
+let tipo=document.getElementById("tipo").value;
+
+let custo=+document.getElementById("custo").value;
+let preco=+document.getElementById("preco").value;
+let vendas=+document.getElementById("vendas").value;
+let fixo=+document.getElementById("fixo").value;
+
+// cálculo base
+let lucroUnit=preco-custo;
+let margem=(lucroUnit/preco)*100;
+let lucroMes=((lucroUnit*vendas)-(fixo/30))*30;
+
+// status
+let status =
+lucroMes<=0 ? "❌ PREJUÍZO"
+: margem<20 ? "⚠ RISCO"
+: "✔ VIÁVEL";
+
+// salvar dados
+dados={nome,tipo,margem,lucroMes,status};
+
+// output
+document.getElementById("resultado").innerHTML=`
+<b>${nome}</b><br>
+Margem: ${margem.toFixed(2)}%<br>
+Lucro mensal: R$ ${lucroMes.toFixed(2)}<br>
+Status: ${status}
+`;
+
+}
+
+// =========================
+// EDUCAÇÃO
+// =========================
+function educar(){
+
+let e="";
+
+if(dados.tipo==="produto"){
+e="📦 Produto depende de margem e volume.";
+}
+
+if(dados.tipo==="servico"){
+e="🔧 Serviço depende de tempo e eficiência.";
+}
+
+if(dados.tipo==="digital"){
+e="💻 Digital escala com baixo custo variável.";
+}
+
+document.getElementById("educacao").innerHTML=e;
+
+}
+
+// =========================
+// CHECKLIST
+// =========================
+function checklist(){
+
+let c={
+produto:["Fornecedor","Estoque","Preço"],
+servico:["Ferramentas","Agenda","Clientes"],
+digital:["Plataforma","Marketing","Escala"]
+};
+
+document.getElementById("checklist").innerHTML =
+c[dados.tipo].map(i=>"✔ "+i).join("<br>");
+
+}
+
+// =========================
+// RELATÓRIO FINAL
+// =========================
+function relatorio(){
+
+document.getElementById("relatorio").innerHTML=`
+<b>RELATÓRIO FINAL</b><br><br>
+Negócio: ${dados.nome}<br>
+Margem: ${dados.margem.toFixed(2)}%<br>
+Lucro mensal: R$ ${dados.lucroMes.toFixed(2)}<br>
+Status: ${dados.status}<br><br>
+Sistema de validação automática de negócios.
+`;
+
+}
+
+</script>
+
+</body>
+</html>
