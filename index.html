@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Plano de Negócio Inteligente</title>
+<title>Intelligent Business Plan</title>
 
 <style>
 body{font-family:Arial;margin:0;background:#eef2f5;}
@@ -14,6 +14,7 @@ input,textarea,button{width:100%;padding:10px;margin:5px 0;}
 .active{display:block;}
 .progress{height:10px;background:#ddd;border-radius:5px;margin-bottom:10px;}
 .bar{height:10px;background:#1D4E89;width:0%;border-radius:5px;}
+.guide{background:#f0f6ff;padding:10px;border-left:5px solid #1D4E89;margin-bottom:10px;}
 hr{margin:10px 0;}
 </style>
 </head>
@@ -21,28 +22,28 @@ hr{margin:10px 0;}
 <body>
 
 <header>
-<h2>🧠 Plano de Negócio Inteligente</h2>
-<p>Curso + Simulador + Consultoria</p>
+<h2>🧠 Intelligent Business Plan System</h2>
+<p>Curso + Simulação + Validação de Negócio</p>
 </header>
 
 <div class="container">
 
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
 
 <!-- 1 IDEIA -->
 <div class="card step active" id="step1">
 <h3>1. 💡 IDEIA</h3>
 
-<p>
-Defina claramente o negócio que deseja criar.
-</p>
-
-<p><b>Sugestão:</b> Escolha algo simples, vendável e com demanda.</p>
+<div class="guide">
+<b>GUIA:</b> Defina claramente o negócio.<br>
+✔ nome<br>
+✔ produto<br>
+✔ público<br>
+💡 Clareza evita falha
+</div>
 
 <input id="nome" placeholder="Nome do negócio">
-<textarea id="nota1" placeholder="Descreva sua ideia"></textarea>
+<textarea id="nota1" placeholder="Sua ideia"></textarea>
 
 <button onclick="next(2)">Próximo</button>
 </div>
@@ -51,18 +52,26 @@ Defina claramente o negócio que deseja criar.
 <div class="card step" id="step2">
 <h3>2. 📊 MERCADO</h3>
 
-<p><b>Sugestão:</b> valide se existe procura antes de investir.</p>
+<div class="guide">
+✔ validar demanda<br>
+✔ concorrência<br>
+💡 Sem mercado = sem negócio
+</div>
 
-<textarea id="nota2" placeholder="Análise de mercado"></textarea>
+<textarea id="nota2"></textarea>
 
 <button onclick="next(3)">Próximo</button>
 </div>
 
 <!-- 3 LOCAL -->
 <div class="card step" id="step3">
-<h3>3. 📍 LOCALIZAÇÃO</h3>
+<h3>3. 📍 LOCAL</h3>
 
-<p><b>Sugestão:</b> fluxo de pessoas define 60% do sucesso.</p>
+<div class="guide">
+✔ fluxo de pessoas<br>
+✔ visibilidade<br>
+💡 local define lucro
+</div>
 
 <textarea id="nota3"></textarea>
 
@@ -73,7 +82,10 @@ Defina claramente o negócio que deseja criar.
 <div class="card step" id="step4">
 <h3>4. 💰 FINANCEIRO</h3>
 
-<p><b>Sugestão:</b> margem acima de 25% é saudável.</p>
+<div class="guide">
+✔ simular lucro antes de investir<br>
+💡 margem ideal > 25%
+</div>
 
 <input id="preco" placeholder="Preço">
 <input id="custo" placeholder="Custo">
@@ -91,7 +103,11 @@ Defina claramente o negócio que deseja criar.
 <div class="card step" id="step5">
 <h3>5. ⚙ OPERAÇÃO</h3>
 
-<p><b>Sugestão:</b> padronizar processo evita prejuízo.</p>
+<div class="guide">
+✔ padrão de produção<br>
+✔ fornecedores<br>
+💡 processo = lucro
+</div>
 
 <textarea id="nota5"></textarea>
 
@@ -100,9 +116,14 @@ Defina claramente o negócio que deseja criar.
 
 <!-- 6 LEGAL -->
 <div class="card step" id="step6">
-<h3>6. ⚖ LEGALIZAÇÃO</h3>
+<h3>6. ⚖ LEGAL</h3>
 
-<p><b>Sugestão:</b> MEI + vigilância sanitária + alvará.</p>
+<div class="guide">
+✔ MEI / CNPJ<br>
+✔ vigilância sanitária<br>
+✔ alvará<br>
+💡 sem isso = risco
+</div>
 
 <textarea id="nota6"></textarea>
 
@@ -113,7 +134,10 @@ Defina claramente o negócio que deseja criar.
 <div class="card step" id="step7">
 <h3>7. 📊 REALIDADE</h3>
 
-<p><b>Sugestão:</b> sempre comparar simulação com prática.</p>
+<div class="guide">
+✔ comparar simulação vs prática<br>
+💡 ajustar operação
+</div>
 
 <input id="realLucro" placeholder="Lucro real">
 <textarea id="nota7"></textarea>
@@ -139,105 +163,84 @@ Defina claramente o negócio que deseja criar.
 
 <script>
 
-let dados = {};
+let dados={};
 
 // progresso
 function next(s){
 document.querySelectorAll(".step").forEach(e=>e.classList.remove("active"));
 document.getElementById("step"+s).classList.add("active");
-document.getElementById("bar").style.width = (s*12.5)+"%";
+document.getElementById("bar").style.width=(s*12.5)+"%";
 if(s===8) gerar();
 }
 
-// cálculo financeiro
+// cálculo
 function calcular(){
 
-let p = +preco.value || 35;
-let c = +custo.value || 18;
-let v = +vendas.value || 40;
-let f = +fixo.value || 6000;
+let p=+preco.value||35;
+let c=+custo.value||18;
+let v=+vendas.value||40;
+let f=+fixo.value||6000;
 
-let lucro = ((p-c)*v*30) - f;
-let margem = ((p-c)/p)*100;
+let lucro=((p-c)*v*30)-f;
+let margem=((p-c)/p)*100;
 
-dados = {lucro, margem};
+dados={lucro,margem};
 
-resultado.innerHTML =
+resultado.innerHTML=
 `Lucro: R$ ${lucro.toFixed(2)}<br>
 Margem: ${margem.toFixed(2)}%`;
 
 }
 
-// comparação real
+// comparação
 function comparar(){
-
-let real = +realLucro.value || 0;
-
-comp.innerHTML =
-`Diferença: R$ ${(real - dados.lucro).toFixed(2)}`;
-
+let real=+realLucro.value||0;
+comp.innerHTML=`Diferença: R$ ${(real-dados.lucro).toFixed(2)}`;
 }
 
-// relatório final completo
+// relatório final
 function gerar(){
 
-relatorio.innerHTML = `
+relatorio.innerHTML=`
 
-<h3>📘 RELATÓRIO COMPLETO DO NEGÓCIO</h3>
+<h3>📘 RELATÓRIO COMPLETO</h3>
 
 <hr>
 
 <b>💡 IDEIA</b><br>
-Negócio: ${nome.value || "-"}<br>
-Anotação: ${nota1.value || "Não informado"}<br><br>
-
-<hr>
+${nome.value}<br>
+${nota1.value}<br><br>
 
 <b>📊 MERCADO</b><br>
-Anotação: ${nota2.value || "Não informado"}<br><br>
+${nota2.value}<br><br>
 
-<hr>
-
-<b>📍 LOCALIZAÇÃO</b><br>
-Anotação: ${nota3.value || "Não informado"}<br><br>
-
-<hr>
+<b>📍 LOCAL</b><br>
+${nota3.value}<br><br>
 
 <b>💰 FINANCEIRO</b><br>
-Lucro: ${dados.lucro?.toFixed(2) || 0}<br>
-Margem: ${dados.margem?.toFixed(2) || 0}%<br>
-Preço: ${preco.value || "-"}<br>
-Custo: ${custo.value || "-"}<br>
-Vendas: ${vendas.value || "-"}<br><br>
-
-<hr>
+Lucro: ${dados.lucro?.toFixed(2)||0}<br>
+Margem: ${dados.margem?.toFixed(2)||0}%<br><br>
 
 <b>⚙ OPERAÇÃO</b><br>
-${nota5.value || "Não informado"}<br><br>
-
-<hr>
+${nota5.value}<br><br>
 
 <b>⚖ LEGAL</b><br>
-${nota6.value || "Não informado"}<br><br>
-
-<hr>
+${nota6.value}<br><br>
 
 <b>📊 REALIDADE</b><br>
-${nota7.value || "Não informado"}<br><br>
-
-<hr>
+${nota7.value}<br><br>
 
 <b>📌 CONCLUSÃO</b><br>
-${dados.lucro > 0 ? "✔ Negócio viável" : "❌ Negócio não viável"}
+${dados.lucro>0?"✔ Viável":"❌ Não viável"}
 
 `;
 
 }
 
-// reset correto
+// reset
 function reset(){
 
-dados = {};
+dados={};
 
 document.querySelectorAll("input,textarea").forEach(e=>e.value="");
 document.querySelectorAll(".step").forEach(e=>e.classList.remove("active"));
