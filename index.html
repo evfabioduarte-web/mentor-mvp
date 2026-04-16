@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Intelligent Business Plan</title>
+<title>Business Plan Fix</title>
 
 <style>
 body{font-family:Arial;margin:0;background:#eef2f5;}
@@ -12,150 +12,113 @@ header{background:#1D4E89;color:#fff;padding:15px;text-align:center;}
 input,textarea,button{width:100%;padding:10px;margin:5px 0;}
 .step{display:none;}
 .active{display:block;}
-.progress{height:10px;background:#ddd;border-radius:5px;margin-bottom:10px;}
+.guide{background:#eef5ff;border-left:5px solid #1D4E89;padding:10px;margin-bottom:10px;}
 .bar{height:10px;background:#1D4E89;width:0%;border-radius:5px;}
-.guide{background:#f0f6ff;padding:10px;border-left:5px solid #1D4E89;margin-bottom:10px;}
-hr{margin:10px 0;}
+.progress{background:#ddd;border-radius:5px;margin-bottom:10px;}
 </style>
 </head>
 
 <body>
 
 <header>
-<h2>🧠 Intelligent Business Plan System</h2>
-<p>Curso + Simulação + Validação de Negócio</p>
+<h2>🧠 Plano de Negócio Inteligente</h2>
 </header>
 
 <div class="container">
 
 <div class="progress"><div class="bar" id="bar"></div></div>
 
-<!-- 1 IDEIA -->
+<!-- IDEIA -->
 <div class="card step active" id="step1">
-<h3>1. 💡 IDEIA</h3>
+<h3>1. IDEIA</h3>
 
-<div class="guide">
-<b>GUIA:</b> Defina claramente o negócio.<br>
-✔ nome<br>
-✔ produto<br>
-✔ público<br>
-💡 Clareza evita falha
-</div>
+<div class="guide" id="g1"></div>
 
-<input id="nome" placeholder="Nome do negócio">
-<textarea id="nota1" placeholder="Sua ideia"></textarea>
+<input id="ideaName">
+<textarea id="ideaText"></textarea>
 
 <button onclick="next(2)">Próximo</button>
 </div>
 
-<!-- 2 MERCADO -->
+<!-- MERCADO -->
 <div class="card step" id="step2">
-<h3>2. 📊 MERCADO</h3>
+<h3>2. MERCADO</h3>
+<div class="guide" id="g2"></div>
 
-<div class="guide">
-✔ validar demanda<br>
-✔ concorrência<br>
-💡 Sem mercado = sem negócio
-</div>
-
-<textarea id="nota2"></textarea>
+<textarea id="marketText"></textarea>
 
 <button onclick="next(3)">Próximo</button>
 </div>
 
-<!-- 3 LOCAL -->
+<!-- LOCAL -->
 <div class="card step" id="step3">
-<h3>3. 📍 LOCAL</h3>
+<h3>3. LOCAL</h3>
+<div class="guide" id="g3"></div>
 
-<div class="guide">
-✔ fluxo de pessoas<br>
-✔ visibilidade<br>
-💡 local define lucro
-</div>
-
-<textarea id="nota3"></textarea>
+<textarea id="localText"></textarea>
 
 <button onclick="next(4)">Próximo</button>
 </div>
 
-<!-- 4 FINANCEIRO -->
+<!-- FINANCEIRO -->
 <div class="card step" id="step4">
-<h3>4. 💰 FINANCEIRO</h3>
+<h3>4. FINANCEIRO</h3>
+<div class="guide" id="g4"></div>
 
-<div class="guide">
-✔ simular lucro antes de investir<br>
-💡 margem ideal > 25%
-</div>
+<input id="price">
+<input id="cost">
+<input id="sales">
+<input id="fixed">
 
-<input id="preco" placeholder="Preço">
-<input id="custo" placeholder="Custo">
-<input id="vendas" placeholder="Vendas/dia">
-<input id="fixo" placeholder="Custos fixos">
+<button onclick="calc()">Calcular</button>
 
-<button onclick="calcular()">Calcular</button>
-
-<div id="resultado"></div>
+<div id="finance"></div>
 
 <button onclick="next(5)">Próximo</button>
 </div>
 
-<!-- 5 OPERAÇÃO -->
+<!-- OPERAÇÃO -->
 <div class="card step" id="step5">
-<h3>5. ⚙ OPERAÇÃO</h3>
+<h3>5. OPERAÇÃO</h3>
+<div class="guide" id="g5"></div>
 
-<div class="guide">
-✔ padrão de produção<br>
-✔ fornecedores<br>
-💡 processo = lucro
-</div>
-
-<textarea id="nota5"></textarea>
+<textarea id="opText"></textarea>
 
 <button onclick="next(6)">Próximo</button>
 </div>
 
-<!-- 6 LEGAL -->
+<!-- LEGAL -->
 <div class="card step" id="step6">
-<h3>6. ⚖ LEGAL</h3>
+<h3>6. LEGAL</h3>
+<div class="guide" id="g6"></div>
 
-<div class="guide">
-✔ MEI / CNPJ<br>
-✔ vigilância sanitária<br>
-✔ alvará<br>
-💡 sem isso = risco
-</div>
-
-<textarea id="nota6"></textarea>
+<textarea id="legalText"></textarea>
 
 <button onclick="next(7)">Próximo</button>
 </div>
 
-<!-- 7 REALIDADE -->
+<!-- REAL -->
 <div class="card step" id="step7">
-<h3>7. 📊 REALIDADE</h3>
+<h3>7. REALIDADE</h3>
+<div class="guide" id="g7"></div>
 
-<div class="guide">
-✔ comparar simulação vs prática<br>
-💡 ajustar operação
-</div>
+<input id="realProfit">
+<textarea id="realText"></textarea>
 
-<input id="realLucro" placeholder="Lucro real">
-<textarea id="nota7"></textarea>
+<button onclick="compare()">Comparar</button>
 
-<button onclick="comparar()">Comparar</button>
-
-<div id="comp"></div>
+<div id="compare"></div>
 
 <button onclick="next(8)">Próximo</button>
 </div>
 
-<!-- 8 RELATÓRIO -->
+<!-- RELATÓRIO -->
 <div class="card step" id="step8">
-<h3>8. 📄 RELATÓRIO FINAL</h3>
+<h3>8. RELATÓRIO</h3>
 
-<div id="relatorio"></div>
+<div id="report"></div>
 
-<button onclick="gerar()">Gerar Relatório</button>
+<button onclick="generate()">Gerar</button>
 <button onclick="reset()">Reiniciar</button>
 </div>
 
@@ -163,95 +126,93 @@ hr{margin:10px 0;}
 
 <script>
 
-let dados={};
+let data = {};
 
-// progresso
-function next(s){
+const guides = {
+1:"Defina nome, produto e público.",
+2:"Valide demanda e concorrência.",
+3:"Escolha local com fluxo.",
+4:"Simule lucro antes de investir.",
+5:"Padronize operação.",
+6:"Regularize legalmente.",
+7:"Compare teoria vs realidade."
+};
+
+// carregar guias corretamente
+function loadGuides(){
+for(let i=1;i<=7;i++){
+document.getElementById("g"+i).innerHTML = guides[i];
+}
+}
+loadGuides();
+
+// navegação segura
+function next(n){
 document.querySelectorAll(".step").forEach(e=>e.classList.remove("active"));
-document.getElementById("step"+s).classList.add("active");
-document.getElementById("bar").style.width=(s*12.5)+"%";
-if(s===8) gerar();
+document.getElementById("step"+n).classList.add("active");
+document.getElementById("bar").style.width=(n*12.5)+"%";
+if(n===8) generate();
 }
 
-// cálculo
-function calcular(){
+// cálculo seguro
+function calc(){
 
-let p=+preco.value||35;
-let c=+custo.value||18;
-let v=+vendas.value||40;
-let f=+fixo.value||6000;
+let p = Number(document.getElementById("price").value)||35;
+let c = Number(document.getElementById("cost").value)||18;
+let s = Number(document.getElementById("sales").value)||40;
+let f = Number(document.getElementById("fixed").value)||6000;
 
-let lucro=((p-c)*v*30)-f;
-let margem=((p-c)/p)*100;
+let profit = ((p-c)*s*30)-f;
+let margin = ((p-c)/p)*100;
 
-dados={lucro,margem};
+data = {profit,margin};
 
-resultado.innerHTML=
-`Lucro: R$ ${lucro.toFixed(2)}<br>
-Margem: ${margem.toFixed(2)}%`;
+document.getElementById("finance").innerHTML =
+`Lucro: R$ ${profit.toFixed(2)}<br>Margem: ${margin.toFixed(2)}%`;
 
 }
 
-// comparação
-function comparar(){
-let real=+realLucro.value||0;
-comp.innerHTML=`Diferença: R$ ${(real-dados.lucro).toFixed(2)}`;
+// comparação segura
+function compare(){
+
+let real = Number(document.getElementById("realProfit").value)||0;
+
+document.getElementById("compare").innerHTML =
+`Diferença: R$ ${(real-data.profit).toFixed(2)}`;
+
 }
 
-// relatório final
-function gerar(){
+// relatório confiável
+function generate(){
 
-relatorio.innerHTML=`
+report.innerHTML = `
+<h3>📘 RELATÓRIO FINAL</h3>
 
-<h3>📘 RELATÓRIO COMPLETO</h3>
+<b>Ideia:</b><br>${ideaName.value}<br>${ideaText.value}<br><br>
 
-<hr>
+<b>Mercado:</b><br>${marketText.value}<br><br>
 
-<b>💡 IDEIA</b><br>
-${nome.value}<br>
-${nota1.value}<br><br>
+<b>Local:</b><br>${localText.value}<br><br>
 
-<b>📊 MERCADO</b><br>
-${nota2.value}<br><br>
+<b>Financeiro:</b><br>
+Lucro: ${data.profit?.toFixed(2)||0}<br>
+Margem: ${data.margin?.toFixed(2)||0}%<br><br>
 
-<b>📍 LOCAL</b><br>
-${nota3.value}<br><br>
+<b>Operação:</b><br>${opText.value}<br><br>
 
-<b>💰 FINANCEIRO</b><br>
-Lucro: ${dados.lucro?.toFixed(2)||0}<br>
-Margem: ${dados.margem?.toFixed(2)||0}%<br><br>
+<b>Legal:</b><br>${legalText.value}<br><br>
 
-<b>⚙ OPERAÇÃO</b><br>
-${nota5.value}<br><br>
+<b>Realidade:</b><br>${realText.value}<br><br>
 
-<b>⚖ LEGAL</b><br>
-${nota6.value}<br><br>
-
-<b>📊 REALIDADE</b><br>
-${nota7.value}<br><br>
-
-<b>📌 CONCLUSÃO</b><br>
-${dados.lucro>0?"✔ Viável":"❌ Não viável"}
-
+<b>Decisão:</b><br>
+${data.profit>0?"✔ Viável":"❌ Não viável"}
 `;
 
 }
 
-// reset
+// reset robusto
 function reset(){
-
-dados={};
-
-document.querySelectorAll("input,textarea").forEach(e=>e.value="");
-document.querySelectorAll(".step").forEach(e=>e.classList.remove("active"));
-
-document.getElementById("step1").classList.add("active");
-document.getElementById("bar").style.width="0%";
-
-resultado.innerHTML="";
-comp.innerHTML="";
-relatorio.innerHTML="";
-
+location.reload();
 }
 
 </script>
