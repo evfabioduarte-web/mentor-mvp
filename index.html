@@ -1,443 +1,666 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MVP - Enriqueta RFID (Versão Câmera)</title>
-    <!-- Biblioteca HTML5-QRCode para compatibilidade universal com câmeras de telemóveis -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg: #f9fafb;
-            --card-bg: #ffffff;
-            --text: #1f2937;
-            --border: #e5e7eb;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 16px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 4px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 16px;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 8px;
-            font-weight: 600;
-        }
-
-        button:hover {
-            background-color: var(--primary-hover);
-        }
-
-        button.secondary {
-            background-color: #6b7280;
-        }
-
-        button.secondary:hover {
-            background-color: #4b5563;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-
-        label {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #4b5563;
-        }
-
-        .row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .col {
-            flex: 1;
-        }
-
-        #reader {
-            width: 100%;
-            border-radius: 6px;
-            overflow: hidden;
-            margin-bottom: 12px;
-            display: none;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.875rem;
-            margin-top: 12px;
-        }
-
-        th, td {
-            border: 1px solid var(--border);
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f3f4f6;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>Genesis Marketing OS Pro — Versão Operacional</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--text:#142033;--muted:#667085;--line:#dfe5ee;--primary:#2563eb;--primary2:#1d4ed8;--purple:#7c3aed;--success:#16a34a;--warn:#d97706;--danger:#dc2626;--dark:#0b1220;--radius:17px;--shadow:0 14px 36px rgba(15,23,42,.08)}
+[data-theme=dark]{--bg:#07101e;--card:#101b2d;--text:#edf4ff;--muted:#9caec3;--line:#263750;--dark:#030914;--shadow:0 14px 38px rgba(0,0,0,.27)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{display:grid;grid-template-columns:275px 1fr;min-height:100vh}.side{background:var(--dark);color:#fff;padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;gap:12px;align-items:center;padding:5px 8px 20px}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#2563eb,#8b5cf6);font-weight:900}.brand b{display:block}.brand small{color:#94a3b8}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#cbd5e1;padding:11px 12px;border-radius:11px;text-align:left;display:flex;gap:9px}.nav button:hover,.nav button.active{background:#1e293b;color:#fff}.nav-title{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.12em;margin:15px 12px 7px}.side-bottom{margin-top:20px;padding:13px;border:1px solid #29364b;background:#172033;border-radius:13px;font-size:12px;color:#cbd5e1}.main{min-width:0}.top{height:72px;background:var(--card);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:0 24px;position:sticky;top:0;z-index:20}.top h1{font-size:18px;margin:0}.top-actions{display:flex;gap:8px;align-items:center}.btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 13px;border-radius:10px}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.primary:hover{background:var(--primary2)}.btn.success{background:#dcfce7;border-color:#bbf7d0;color:#166534}.btn.warn{background:#ffedd5;border-color:#fed7aa;color:#9a3412}.btn.danger{background:#fee2e2;border-color:#fecaca;color:#991b1b}.btn.danger:hover{background:#dc2626;color:#fff}.btn.small{padding:6px 9px;font-size:11px}.role-pill{font-size:11px;font-weight:800;padding:5px 9px;border-radius:999px;background:#e0e7ff;color:#3730a3}.content{padding:25px;max-width:1600px;margin:auto}.page{display:none}.page.active{display:block}.head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:19px}.head h2{font-size:27px;margin:0 0 5px}.head p{margin:0;color:var(--muted)}.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(5,1fr)}.two{grid-template-columns:1.2fr .8fr}.three{grid-template-columns:repeat(3,1fr)}.four{grid-template-columns:repeat(4,1fr)}.card,.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.card{padding:19px}.stat{padding:18px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:28px;margin-top:7px}.stat em{font-style:normal;font-size:11px;color:var(--success)}.card h3{margin:0 0 13px}.field{display:grid;gap:6px}.field label{font-size:12px;color:var(--muted);font-weight:800}input,select,textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text)}textarea{min-height:110px;resize:vertical}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:13px}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:11px;border-bottom:1px solid var(--line);font-size:12px;text-align:left;vertical-align:top}.table th{color:var(--muted)}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:900;background:#e2e8f0;color:#475569}.badge.ok{background:#dcfce7;color:#166534}.badge.warn{background:#ffedd5;color:#9a3412}.badge.blue{background:#dbeafe;color:#1d4ed8}.badge.red{background:#fee2e2;color:#991b1b}.pipeline{display:grid;grid-template-columns:repeat(5,minmax(220px,1fr));gap:12px;overflow:auto}.col{min-height:410px;background:rgba(148,163,184,.1);border:1px solid var(--line);border-radius:15px;padding:11px}.col h4{margin:0 0 11px;display:flex;justify-content:space-between}.item{padding:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:9px;box-shadow:0 5px 14px rgba(15,23,42,.05)}.item b{display:block;margin-bottom:6px}.meta{font-size:11px;color:var(--muted);line-height:1.5}.item-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.progress{height:8px;border-radius:99px;background:var(--line);overflow:hidden}.progress span{height:100%;display:block;background:linear-gradient(90deg,var(--primary),var(--purple))}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.day-name{text-align:center;font-size:11px;font-weight:900;color:var(--muted)}.day{min-height:102px;border:1px solid var(--line);border-radius:11px;background:var(--card);padding:7px}.cal-item{font-size:9px;padding:4px 5px;border-radius:5px;background:#dbeafe;color:#1e3a8a;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.preview-shell{display:grid;place-items:center;min-height:590px;background:#e7ecf3;border-radius:17px;padding:20px}.social-preview{width:min(390px,100%);background:#fff;color:#111827;border-radius:20px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.18)}.social-top{padding:12px;display:flex;gap:9px;align-items:center}.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#8b5cf6)}.creative{aspect-ratio:1/1;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;padding:25px;color:white;text-align:center;background-size:cover;background-position:center}.creative h2{font-size:28px}.social-copy{padding:13px;font-size:13px}.media-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}.media-card{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--card);position:relative}.media-thumb{height:120px;background:#e2e8f0;display:grid;place-items:center;background-size:cover;background-position:center}.media-info{padding:10px}.approval{border-left:5px solid var(--warn)}.approval.approved{border-color:var(--success)}.approval.rejected{border-color:var(--danger)}.chart-bars{display:flex;align-items:end;gap:9px;height:190px;border-bottom:1px solid var(--line);padding-top:20px}.bar{flex:1;min-width:26px;background:linear-gradient(180deg,#60a5fa,#2563eb);border-radius:8px 8px 0 0;position:relative}.bar span{position:absolute;bottom:-22px;width:100%;text-align:center;font-size:9px;color:var(--muted)}.assistant-box{border:1px dashed #8b5cf6;background:rgba(124,58,237,.06);border-radius:14px;padding:15px}.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.quick{padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--card);text-align:left}.quick b{display:block}.quick small{color:var(--muted)}.modal{position:fixed;inset:0;background:rgba(2,6,23,.7);z-index:90;display:none;place-items:center;padding:18px}.modal.open{display:grid}.dialog{width:min(720px,100%);max-height:90vh;overflow:auto;background:var(--card);border-radius:19px;padding:21px}.dialog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.dialog-head h3{margin:0}.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;padding:12px 16px;border-radius:11px;display:none;z-index:120}.toast.show{display:block}.empty{text-align:center;padding:24px;color:var(--muted)}.client-only,.admin-only{display:none}.role-client .client-only{display:block}.role-client .admin-only{display:none!important}.role-admin .admin-only{display:block}.role-admin button.admin-only{display:flex}.mobile{display:none}.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:15px}
+@media(max-width:1100px){.app{grid-template-columns:1fr}.side{position:fixed;left:-290px;width:275px;z-index:50;transition:.25s}.side.open{left:0}.mobile{display:inline-block}.stats,.four{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr 1fr}.media-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:680px){.stats,.two,.three,.four,.form-grid,.quick-grid,.media-grid{grid-template-columns:1fr}.content{padding:16px}.top{padding:0 12px}.head{display:block}.calendar{grid-template-columns:repeat(7,76px);overflow:auto}.day{min-height:85px}.top-actions .btn.primary{display:none}}
+</style>
 </head>
-<body>
+<body class="role-admin">
+<div class="app">
+<aside class="side" id="side">
+ <div class="brand"><div class="logo">GM</div><div><b id="brandName">Genesis Marketing</b><small>OS Pro — Funcional v1.1</small></div></div>
+ <nav class="nav" id="nav">
+  <div class="nav-title">Gestão</div>
+  <button data-page="dashboard" class="active">🏠 Painel executivo</button>
+  <button data-page="crm" class="admin-only">🎯 CRM e vendas</button>
+  <button data-page="clientes" class="admin-only">🏢 Clientes</button>
+  <button data-page="projetos" class="admin-only">📁 Projetos e tarefas</button>
+  <div class="nav-title">Conteúdo</div>
+  <button data-page="conteudos">🧩 Pipeline de conteúdo</button>
+  <button data-page="studio">🎨 Social Studio</button>
+  <button data-page="calendario">🗓️ Calendário editorial</button>
+  <button data-page="media">🖼️ Biblioteca de media</button>
+  <button data-page="aprovacoes">✅ Aprovações</button>
+  <div class="nav-title">Resultados</div>
+  <button data-page="publicacao" class="admin-only">🚀 Publicação</button>
+  <button data-page="metricas">📊 Métricas</button>
+  <button data-page="financeiro" class="admin-only">💳 Financeiro</button>
+  <div class="nav-title">Sistema</div>
+  <button data-page="equipe" class="admin-only">👥 Equipa e permissões</button>
+  <button data-page="ia" class="admin-only">✨ Assistente IA</button>
+  <button data-page="admin" class="admin-only">⚙️ Administração</button>
+ </nav>
+ <div class="side-bottom">Fluxo completo:<br><b>Lead → Proposta → Cliente → Produção → Aprovação → Publicação → Métricas → Faturação</b></div>
+</aside>
 
-<div class="container">
-    <header>
-        <h1>Enriqueta RFID</h1>
-        <p>MVP - Controle de Estoque via Câmera Universal</p>
-    </header>
+<main class="main">
+<header class="top">
+ <div style="display:flex;gap:10px;align-items:center"><button class="btn mobile" onclick="toggleSide()">☰</button><h1 id="pageTitle">Painel executivo</h1></div>
+ <div class="top-actions"><span class="role-pill" id="rolePill">Administrador</span><button class="btn" onclick="toggleTheme()">◐</button><button class="btn" onclick="switchRole()">⇄ Mudar perfil</button><button class="btn primary admin-only" onclick="openContent()">+ Novo conteúdo</button></div>
+</header>
+<div class="content">
 
-    <!-- Seção da Câmera -->
-    <div class="card">
-        <h3>📷 Leitura por Câmera</h3>
-        <button id="btn-start-camera" onclick="iniciarCamera()">Iniciar Câmera</button>
-        <div id="reader"></div>
-        <button id="btn-stop-camera" class="secondary" onclick="pararCamera()" style="display:none;">Parar Câmera</button>
-    </div>
+<section class="page active" id="dashboard">
+ <div class="head"><div><h2>Painel executivo</h2><p>Visão consolidada da operação, carteira e resultados.</p></div><button class="btn admin-only" onclick="seed()">Carregar demonstração</button></div>
+ <div class="grid stats">
+  <div class="stat"><small>Receita prevista</small><strong id="sRevenue">R$ 0</strong><em>Contratos ativos</em></div>
+  <div class="stat"><small>Clientes ativos</small><strong id="sClients">0</strong></div>
+  <div class="stat"><small>Conteúdos ativos</small><strong id="sContent">0</strong></div>
+  <div class="stat"><small>Aguardando aprovação</small><strong id="sApproval">0</strong></div>
+  <div class="stat"><small>Conversões</small><strong id="sConversions">0</strong></div>
+ </div><br>
+ <div class="grid two">
+  <div class="card"><h3>Operação da semana</h3><div id="weekOps"></div></div>
+  <div class="card"><h3>Saúde da agência</h3><div id="agencyHealth"></div></div>
+ </div><br>
+ <div class="grid three">
+  <div class="card"><h3>Funil comercial</h3><div id="funnelMini"></div></div>
+  <div class="card"><h3>Próximas entregas</h3><div id="deliveriesMini"></div></div>
+  <div class="card"><h3>Financeiro</h3><div id="financeMini"></div></div>
+ </div>
+</section>
 
-    <!-- Seção de Cadastro -->
-    <div class="card">
-        <h3>📦 Cadastro de Produto</h3>
-        <form id="product-form" onsubmit="salvarProduto(event)">
-            <label for="codigo">Código do Produto</label>
-            <input type="text" id="codigo" required>
+<section class="page" id="crm">
+ <div class="head"><div><h2>CRM e vendas</h2><p>Organize oportunidades desde o primeiro contacto até ao contrato.</p></div><button class="btn primary" onclick="openLead()">+ Novo lead</button></div>
+ <div class="pipeline" id="crmPipeline"></div>
+</section>
 
-            <label for="descricao">Descrição (Produto)</label>
-            <input type="text" id="descricao" required>
+<section class="page" id="clientes">
+ <div class="head"><div><h2>Clientes</h2><p>Contratos, contactos, serviços e identidade da marca.</p></div><button class="btn primary" onclick="openClient()">+ Cliente</button></div>
+ <div class="card"><div class="toolbar"><input id="clientSearch" placeholder="Pesquisar..." oninput="renderClients()"></div><div class="table-wrap"><table class="table"><thead><tr><th>Empresa</th><th>Responsável</th><th>Plano</th><th>Mensalidade</th><th>Status</th><th>Ações</th></tr></thead><tbody id="clientRows"></tbody></table></div></div>
+</section>
 
-            <div class="row">
-                <div class="col">
-                    <label for="categoria">Categoria</label>
-                    <input type="text" id="categoria">
-                </div>
-                <div class="col">
-                    <label for="marca">Marca</label>
-                    <input type="text" id="marca">
-                </div>
-            </div>
+<section class="page" id="projetos">
+ <div class="head"><div><h2>Projetos e tarefas</h2><p>Controle responsáveis, prioridades, prazos e conclusão.</p></div><button class="btn primary" onclick="openTask()">+ Tarefa</button></div>
+ <div class="grid three" id="taskColumns"></div>
+</section>
 
-            <div class="row">
-                <div class="col">
-                    <label for="quantidade">Quantidade</label>
-                    <input type="number" id="quantidade" value="1" required>
-                </div>
-                <div class="col">
-                    <label for="corredor">Corredor</label>
-                    <input type="text" id="corredor">
-                </div>
-            </div>
+<section class="page" id="conteudos">
+ <div class="head"><div><h2>Pipeline de conteúdo</h2><p>Do briefing à publicação, com aprovação registada.</p></div><button class="btn primary admin-only" onclick="openContent()">+ Conteúdo</button></div>
+ <div class="pipeline" id="contentPipeline"></div>
+</section>
 
-            <div class="row">
-                <div class="col">
-                    <label for="prateleira">Prateleira</label>
-                    <input type="text" id="prateleira">
-                </div>
-                <div class="col">
-                    <label for="posicao">Posição</label>
-                    <input type="text" id="posicao">
-                </div>
-            </div>
+<section class="page" id="studio">
+ <div class="head"><div><h2>Social Studio</h2><p>Crie e visualize peças para as principais redes em tempo real.</p></div></div>
+ <div class="grid two">
+  <div class="card">
+   <div class="form-grid">
+    <div class="field"><label>Cliente</label><select id="stClient"></select></div>
+    <div class="field"><label>Rede social</label><select id="stNetwork" onchange="updateFormats()"></select></div>
+    <div class="field"><label>Formato</label><select id="stFormat" onchange="updateStudio()"></select></div>
+    <div class="field"><label>Tamanho</label><input id="stSize" readonly></div>
+    <div class="field full"><label>Título da arte</label><input id="stTitle" placeholder="Título principal"></div>
+    <div class="field full"><label>Texto da arte</label><textarea id="stBody" placeholder="Mensagem curta e clara"></textarea></div>
+    <div class="field"><label>Cor de fundo</label><input type="color" id="stBg" value="#2563eb"></div>
+    <div class="field"><label>Cor do texto</label><input type="color" id="stTextColor" value="#ffffff"></div>
+    <div class="field full"><label>Imagem de fundo</label><input type="file" id="stImage" accept="image/*"></div>
+    <div class="field full"><label>Legenda</label><textarea id="stCaption"></textarea></div>
+    <div class="field full"><label>Chamada para ação</label><input id="stCta" placeholder="Fale connosco pelo WhatsApp"></div>
+   </div><br>
+   <button class="btn primary admin-only" onclick="sendStudioToPipeline()">Enviar ao pipeline</button>
+  </div>
+  <div class="preview-shell"><div class="social-preview"><div class="social-top"><div class="avatar"></div><div><b id="pvClient">Genesis Marketing</b><br><small id="pvNetwork">Instagram</small></div></div><div class="creative" id="creative"><div><h2 id="pvTitle">Título da arte</h2><p id="pvBody">A visualização muda enquanto você escreve.</p></div></div><div class="social-copy"><b>♡ 💬 ↗</b><p id="pvCaption">Legenda da publicação</p><b id="pvCta"></b></div></div></div>
+ </div>
+</section>
 
-            <div class="row">
-                <div class="col">
-                    <label for="compra">Valor de Compra (€)</label>
-                    <input type="number" step="0.01" id="compra">
-                </div>
-                <div class="col">
-                    <label for="venda">Valor de Venda (€)</label>
-                    <input type="number" step="0.01" id="venda">
-                </div>
-            </div>
+<section class="page" id="calendario">
+ <div class="head"><div><h2>Calendário editorial</h2><p>Planeamento mensal por data, rede e cliente.</p></div><div><button class="btn" onclick="changeMonth(-1)">←</button> <b id="monthTitle"></b> <button class="btn" onclick="changeMonth(1)">→</button></div></div>
+ <div class="calendar" id="calendar"></div>
+</section>
 
-            <button type="submit">Salvar Produto</button>
-        </form>
-    </div>
+<section class="page" id="media">
+ <div class="head"><div><h2>Biblioteca de media</h2><p>Guarde imagens no navegador para reutilizar em conteúdos.</p></div><label class="btn primary admin-only">+ Adicionar media<input type="file" accept="image/*" hidden onchange="addMedia(event)"></label></div>
+ <div class="media-grid" id="mediaGrid"></div>
+</section>
 
-    <!-- Seção de Estoque e Pesquisa -->
-    <div class="card">
-        <h3>📈 Controle de Estoque</h3>
-        <input type="text" id="pesquisa" placeholder="Pesquisar por código, produto ou marca..." onkeyup="pesquisarProdutos()">
-        
-        <button class="secondary" onclick="exportarCSV()">📊 Exportar para CSV</button>
+<section class="page" id="aprovacoes">
+ <div class="head"><div><h2>Aprovações do cliente</h2><p>Área para aprovar, pedir alterações ou rejeitar peças.</p></div></div>
+ <div id="approvalList"></div>
+</section>
 
-        <div class="table-responsive">
-            <table id="tabela-produtos">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Produto</th>
-                        <th>Categoria</th>
-                        <th>Marca</th>
-                        <th>Qtd</th>
-                        <th>Corredor</th>
-                        <th>Prat.</th>
-                        <th>Pos.</th>
-                        <th>Compra</th>
-                        <th>Venda</th>
-                        <th>Data</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Preenchido via JavaScript -->
-                </tbody>
-            </table>
-        </div>
-    </div>
+<section class="page" id="publicacao">
+ <div class="head"><div><h2>Central de publicação</h2><p>Conteúdos aprovados e atalhos para as plataformas oficiais.</p></div></div>
+ <div class="card" id="publishList"></div><br>
+ <div class="grid four">
+  <a class="card" target="_blank" href="https://business.facebook.com/" style="text-decoration:none;color:inherit"><b>Meta Business Suite</b><p>Instagram e Facebook</p></a>
+  <a class="card" target="_blank" href="https://studio.youtube.com/" style="text-decoration:none;color:inherit"><b>YouTube Studio</b><p>Vídeos e Shorts</p></a>
+  <a class="card" target="_blank" href="https://www.linkedin.com/" style="text-decoration:none;color:inherit"><b>LinkedIn</b><p>Publicações profissionais</p></a>
+  <a class="card" target="_blank" href="https://business.google.com/" style="text-decoration:none;color:inherit"><b>Google Business</b><p>Perfil local</p></a>
+ </div>
+</section>
+
+<section class="page" id="metricas">
+ <div class="head"><div><h2>Métricas e desempenho</h2><p>Alcance, interação, leads, conversões e eficiência.</p></div><button class="btn primary admin-only" onclick="openMetric()">+ Resultado</button></div>
+ <div class="grid stats"><div class="stat"><small>Alcance</small><strong id="mReachTotal">0</strong></div><div class="stat"><small>Interações</small><strong id="mEngTotal">0</strong></div><div class="stat"><small>Leads</small><strong id="mLeadsTotal">0</strong></div><div class="stat"><small>Conversões</small><strong id="mConvTotal">0</strong></div><div class="stat"><small>Taxa de conversão</small><strong id="mRate">0%</strong></div></div><br>
+ <div class="grid two"><div class="card"><h3>Desempenho por conteúdo</h3><div class="table-wrap"><table class="table"><thead><tr><th>Conteúdo</th><th>Alcance</th><th>Interações</th><th>Leads</th><th>Conversões</th><th>Ações</th></tr></thead><tbody id="metricRows"></tbody></table></div></div><div class="card"><h3>Visão gráfica</h3><div class="chart-bars" id="metricChart"></div></div></div>
+</section>
+
+<section class="page" id="financeiro">
+ <div class="head"><div><h2>Financeiro</h2><p>Receitas, despesas, mensalidades e resultado operacional.</p></div><button class="btn primary" onclick="openFinance()">+ Lançamento</button></div>
+ <div class="grid four"><div class="stat"><small>Receitas</small><strong id="fIncome">R$ 0</strong></div><div class="stat"><small>Despesas</small><strong id="fExpense">R$ 0</strong></div><div class="stat"><small>Resultado</small><strong id="fBalance">R$ 0</strong></div><div class="stat"><small>A receber</small><strong id="fPending">R$ 0</strong></div></div><br>
+ <div class="card"><div class="table-wrap"><table class="table"><thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Status</th><th>Valor</th><th>Ações</th></tr></thead><tbody id="financeRows"></tbody></table></div></div>
+</section>
+
+<section class="page" id="equipe">
+ <div class="head"><div><h2>Equipa e permissões</h2><p>Defina funções e responsabilidades operacionais.</p></div><button class="btn primary" onclick="openMember()">+ Membro</button></div>
+ <div class="grid three" id="teamGrid"></div>
+</section>
+
+<section class="page" id="ia">
+ <div class="head"><div><h2>Assistente IA operacional</h2><p>Gerador local de estruturas de conteúdo, sem envio de dados externos.</p></div></div>
+ <div class="grid two">
+  <div class="card"><div class="field"><label>Objetivo</label><select id="aiGoal"><option>Atrair clientes</option><option>Gerar vendas</option><option>Educar o público</option><option>Fortalecer a marca</option><option>Divulgar promoção</option></select></div><br><div class="field"><label>Segmento</label><input id="aiSegment" placeholder="Ex.: restaurante, clínica, eletricista"></div><br><div class="field"><label>Produto ou tema</label><input id="aiTopic"></div><br><div class="field"><label>Tom</label><select id="aiTone"><option>Profissional</option><option>Próximo</option><option>Educativo</option><option>Direto</option><option>Inspirador</option></select></div><br><button class="btn primary" onclick="generateAI()">Gerar estrutura</button></div>
+  <div class="assistant-box"><h3>Resultado</h3><textarea id="aiOutput" style="min-height:330px"></textarea><br><button class="btn" onclick="copyAI()">Copiar</button></div>
+ </div>
+</section>
+
+<section class="page" id="admin">
+ <div class="head"><div><h2>Administração do sistema</h2><p>Marca, segurança local, backup e configuração.</p></div></div>
+ <div class="grid two">
+  <div class="card"><h3>Configuração</h3><div class="field"><label>Nome do sistema</label><input id="adminName"></div><br><div class="field"><label>WhatsApp</label><input id="adminPhone"></div><br><div class="field"><label>E-mail</label><input id="adminEmail"></div><br><button class="btn primary" onclick="saveAdmin()">Guardar</button></div>
+  <div class="card"><h3>Dados</h3><p style="color:var(--muted)">A versão HTML guarda os dados neste navegador.</p><button class="btn" onclick="exportData()">Exportar JSON</button> <label class="btn">Importar JSON<input type="file" accept=".json" hidden onchange="importData(event)"></label> <button class="btn danger" onclick="resetData()">Apagar tudo</button><hr style="border:0;border-top:1px solid var(--line);margin:20px 0"><p><b>Limite técnico:</b> autenticação, publicação automática e colaboração real exigem servidor e APIs oficiais.</p></div>
+ </div>
+</section>
+</div>
+</main>
 </div>
 
+<!-- MODAIS -->
+<div class="modal" id="leadModal"><div class="dialog"><div class="dialog-head"><h3>Lead comercial</h3><button class="btn small" onclick="closeModal('leadModal')">✕</button></div><input type="hidden" id="leadId"><div class="form-grid"><div class="field"><label>Empresa</label><input id="leadCompany"></div><div class="field"><label>Contacto</label><input id="leadContact"></div><div class="field"><label>WhatsApp</label><input id="leadPhone"></div><div class="field"><label>Valor estimado</label><input type="number" id="leadValue"></div><div class="field"><label>Etapa</label><select id="leadStage"><option>Novo</option><option>Qualificação</option><option>Proposta</option><option>Negociação</option><option>Ganho</option></select></div><div class="field"><label>Próxima ação</label><input id="leadNext"></div></div><br><div class="modal-actions"><button class="btn danger" id="btnDeleteLead" onclick="deleteLeadModal()" style="display:none;">Excluir</button><button class="btn primary" onclick="saveLead()">Guardar</button></div></div></div>
+
+<div class="modal" id="clientModal"><div class="dialog"><div class="dialog-head"><h3>Cliente</h3><button class="btn small" onclick="closeModal('clientModal')">✕</button></div><input type="hidden" id="cId"><div class="form-grid"><div class="field"><label>Empresa</label><input id="cCompany"></div><div class="field"><label>Responsável</label><input id="cContact"></div><div class="field"><label>WhatsApp</label><input id="cPhone"></div><div class="field"><label>E-mail</label><input id="cEmail"></div><div class="field"><label>Plano</label><input id="cPlan"></div><div class="field"><label>Mensalidade</label><input type="number" id="cMonthly"></div><div class="field"><label>Status</label><select id="cStatus"><option>Ativo</option><option>Pausado</option><option>Encerrado</option></select></div><div class="field"><label>Cor da marca</label><input type="color" id="cColor" value="#2563eb"></div></div><br><div class="modal-actions"><button class="btn danger" id="btnDeleteClient" onclick="deleteClientModal()" style="display:none;">Excluir</button><button class="btn primary" onclick="saveClient()">Guardar</button></div></div></div>
+
+<div class="modal" id="taskModal"><div class="dialog"><div class="dialog-head"><h3>Tarefa</h3><button class="btn small" onclick="closeModal('taskModal')">✕</button></div><input type="hidden" id="tId"><div class="form-grid"><div class="field full"><label>Título</label><input id="tTitle"></div><div class="field"><label>Responsável</label><input id="tOwner"></div><div class="field"><label>Prazo</label><input type="date" id="tDate"></div><div class="field"><label>Prioridade</label><select id="tPriority"><option>Baixa</option><option>Média</option><option>Alta</option></select></div><div class="field"><label>Status</label><select id="tStatus"><option>A fazer</option><option>Em andamento</option><option>Concluído</option></select></div></div><br><div class="modal-actions"><button class="btn danger" id="btnDeleteTask" onclick="deleteTaskModal()" style="display:none;">Excluir</button><button class="btn primary" onclick="saveTask()">Guardar</button></div></div></div>
+
+<div class="modal" id="contentModal"><div class="dialog"><div class="dialog-head"><h3>Conteúdo</h3><button class="btn small" onclick="closeModal('contentModal')">✕</button></div><input type="hidden" id="pId"><div class="form-grid"><div class="field"><label>Cliente</label><select id="pClient"></select></div><div class="field"><label>Rede</label><select id="pNetwork"></select></div><div class="field full"><label>Título</label><input id="pTitle"></div><div class="field full"><label>Legenda/roteiro</label><textarea id="pText"></textarea></div><div class="field"><label>Data</label><input type="date" id="pDate"></div><div class="field"><label>Responsável</label><input id="pOwner"></div><div class="field"><label>Etapa</label><select id="pStage"><option>Briefing</option><option>Produção</option><option>Revisão</option><option>Aprovação</option><option>Publicado</option></select></div><div class="field"><label>Formato</label><input id="pFormat" placeholder="Post, Reel, Story..."></div></div><br><div class="modal-actions"><button class="btn danger" id="btnDeleteContent" onclick="deleteContentModal()" style="display:none;">Excluir</button><button class="btn primary" onclick="saveContent()">Guardar</button></div></div></div>
+
+<div class="modal" id="metricModal"><div class="dialog"><div class="dialog-head"><h3>Resultado</h3><button class="btn small" onclick="closeModal('metricModal')">✕</button></div><div class="form-grid"><div class="field full"><label>Conteúdo</label><select id="metricContent"></select></div><div class="field"><label>Alcance</label><input type="number" id="metricReach"></div><div class="field"><label>Interações</label><input type="number" id="metricEng"></div><div class="field"><label>Leads</label><input type="number" id="metricLeads"></div><div class="field"><label>Conversões</label><input type="number" id="metricConv"></div></div><br><div class="modal-actions"><button class="btn primary" onclick="saveMetric()">Guardar</button></div></div></div>
+
+<div class="modal" id="financeModal"><div class="dialog"><div class="dialog-head"><h3>Lançamento financeiro</h3><button class="btn small" onclick="closeModal('financeModal')">✕</button></div><div class="form-grid"><div class="field"><label>Data</label><input type="date" id="finDate"></div><div class="field"><label>Tipo</label><select id="finType"><option>Receita</option><option>Despesa</option></select></div><div class="field full"><label>Descrição</label><input id="finDesc"></div><div class="field"><label>Valor</label><input type="number" id="finValue"></div><div class="field"><label>Status</label><select id="finStatus"><option>Pago</option><option>Pendente</option></select></div></div><br><div class="modal-actions"><button class="btn primary" onclick="saveFinance()">Guardar</button></div></div></div>
+
+<div class="modal" id="memberModal"><div class="dialog"><div class="dialog-head"><h3>Membro da equipa</h3><button class="btn small" onclick="closeModal('memberModal')">✕</button></div><div class="form-grid"><div class="field"><label>Nome</label><input id="memName"></div><div class="field"><label>Função</label><select id="memRole"><option>Administrador</option><option>Gestor</option><option>Social Media</option><option>Designer</option><option>Tráfego</option><option>Cliente</option></select></div><div class="field"><label>E-mail</label><input id="memEmail"></div><div class="field"><label>Status</label><select id="memStatus"><option>Ativo</option><option>Inativo</option></select></div></div><br><div class="modal-actions"><button class="btn primary" onclick="saveMember()">Guardar</button></div></div></div>
+
+<div class="modal" id="roleModal"><div class="dialog" style="max-width:480px"><div class="dialog-head"><h3>Mudar perfil de visualização</h3><button class="btn small" onclick="closeModal('roleModal')">✕</button></div><button class="btn primary" style="width:100%;margin-bottom:10px" onclick="setRole('admin')">Administrador / Agência</button><button class="btn" style="width:100%" onclick="setRole('client')">Cliente final</button><p style="font-size:11px;color:var(--muted);margin-top:10px;">Esta troca é uma simulação local. A autenticação real exige servidor.</p></div></div>
+<div class="toast" id="toast"></div>
+
 <script>
-    // --- Configuração do IndexedDB ---
-    let db;
-    const dbName = "EnriquetaDB";
-    const storeName = "produtos";
+const KEY='genesisMarketingOSPro_v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{agency:{name:'Genesis Marketing',phone:'',email:''},theme:'light',role:'admin',leads:[],clients:[],tasks:[],contents:[],metrics:[],finance:[],team:[],media:[]};
+let calDate=new Date();
+const leadStages=['Novo','Qualificação','Proposta','Negociação','Ganho'],contentStages=['Briefing','Produção','Revisão','Aprovação','Publicado'];
+const networks={
+'Instagram':{'Post quadrado':[1080,1080],'Post vertical':[1080,1350],'Story / Reel':[1080,1920]},
+'Facebook':{'Post quadrado':[1080,1080],'Post horizontal':[1200,630],'Story / Reel':[1080,1920]},
+'LinkedIn':{'Post quadrado':[1080,1080],'Post horizontal':[1200,627],'Capa':[1584,396]},
+'TikTok':{'Vídeo vertical':[1080,1920],'Foto vertical':[1080,1350]},
+'YouTube':{'Thumbnail':[1280,720],'Short':[1080,1920],'Banner':[2560,1440]},
+'Pinterest':{'Pin vertical':[1000,1500],'Pin quadrado':[1000,1000]},
+'X':{'Post horizontal':[1600,900],'Post quadrado':[1080,1080]},
+'WhatsApp Business':{'Status':[1080,1920],'Catálogo':[1080,1080]},
+'Google Business':{'Post':[1200,900],'Capa':[1024,576]}
+};
 
-    function abrirBanco() {
-        const request = indexedDB.open(dbName, 1);
-        request.onerror = (event) => console.error("Erro ao abrir IndexedDB", event);
-        request.onsuccess = (event) => {
-            db = event.target.result;
-            carregarProdutos();
-        };
-        request.onupgradeneeded = (event) => {
-            let db = event.target.result;
-            if (!db.objectStoreNames.contains(storeName)) {
-                db.createObjectStore(storeName, { keyPath: "codigo" });
-            }
-        };
-    }
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function money(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
+function persist(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function toast(t){let e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function toggleSide(){document.getElementById('side').classList.toggle('open')}
+function toggleTheme(){db.theme=db.theme==='dark'?'light':'dark';persist()}
 
-    abrirBanco();
+function showPage(page){
+ if(db.role==='client'&&['crm','clientes','projetos','publicacao','financeiro','equipe','ia','admin'].includes(page))return;
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ document.getElementById(page).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+ document.getElementById('pageTitle').textContent=document.querySelector(`[data-page="${page}"]`)?.textContent.trim()||'';
+ document.getElementById('side').classList.remove('open');
+}
 
-    // --- Funcionalidade da Câmera (Html5Qrcode Universal) ---
-    let html5QrCode = null;
+const navMenu=document.getElementById('nav');
+navMenu.addEventListener('click',e=>{const b=e.target.closest('button[data-page]');if(b)showPage(b.dataset.page)});
 
-    function iniciarCamera() {
-        const readerDiv = document.getElementById("reader");
-        readerDiv.style.display = "block";
-        document.getElementById("btn-start-camera").style.display = "none";
-        document.getElementById("btn-stop-camera").style.display = "block";
+function switchRole(){openModal('roleModal')}
+function setRole(r){db.role=r;closeModal('roleModal');persist();showPage('dashboard')}
+function clientName(id){return db.clients.find(x=>x.id===id)?.company||'Sem cliente'}
+function fillClients(id,selected=''){document.getElementById(id).innerHTML='<option value="">Selecione</option>'+db.clients.map(c=>`<option value="${c.id}" ${c.id===selected?'selected':''}>${esc(c.company)}</option>`).join('')}
 
-        html5QrCode = new Html5Qrcode("reader");
-        
-        // Configuração universal para usar a câmara traseira em qualquer telemóvel
-        const configKeys = { fps: 10, qrbox: { width: 250, height: 150 } };
+// FUNÇÕES DE EXCLUSÃO
+function removeItem(arrayName, id, msg='Item removido com sucesso!') {
+ if(confirm('Tem certeza de que deseja excluir este item?')) {
+  db[arrayName] = db[arrayName].filter(x => x.id !== id);
+  persist();
+  toast(msg);
+  return true;
+ }
+ return false;
+}
 
-        html5QrCode.start(
-            { facingMode: "environment" }, 
-            configKeys,
-            (decodedText, decodedResult) => {
-                document.getElementById("codigo").value = decodedText;
-                pararCamera();
-                alert("Código lido com sucesso: " + decodedText);
-            },
-            (errorMessage) => {
-                // Erros de leitura contínua ignorados para não poluir a consola
-            }
-        ).catch((err) => {
-            console.error("Erro ao iniciar a câmara: ", err);
-            // Fallback automático para qualquer câmara disponível caso a traseira falhe
-            html5QrCode.start(
-                { facingMode: "user" }, 
-                configKeys,
-                (decodedText, decodedResult) => {
-                    document.getElementById("codigo").value = decodedText;
-                    pararCamera();
-                    alert("Código lido com sucesso: " + decodedText);
-                },
-                (err2) => {}
-            ).catch(err3 => {
-                alert("Não foi possível aceder a nenhuma câmara do dispositivo. Verifique as permissões.");
-                pararCamera();
-            });
-        });
-    }
+// CRM / LEADS
+function openLead(id=''){
+ let x=db.leads.find(a=>a.id===id)||{};
+ document.getElementById('leadId').value=x.id||'';
+ document.getElementById('leadCompany').value=x.company||'';
+ document.getElementById('leadContact').value=x.contact||'';
+ document.getElementById('leadPhone').value=x.phone||'';
+ document.getElementById('leadValue').value=x.value||'';
+ document.getElementById('leadStage').value=x.stage||'Novo';
+ document.getElementById('leadNext').value=x.next||'';
+ document.getElementById('btnDeleteLead').style.display = x.id ? 'inline-block' : 'none';
+ openModal('leadModal');
+}
+function saveLead(){
+ let id=document.getElementById('leadId').value;
+ let item={id:id||uid(),company:document.getElementById('leadCompany').value,contact:document.getElementById('leadContact').value,phone:document.getElementById('leadPhone').value,value:Number(document.getElementById('leadValue').value||0),stage:document.getElementById('leadStage').value,next:document.getElementById('leadNext').value};
+ if(!item.company)return toast('Informe a empresa!');
+ if(id){let idx=db.leads.findIndex(x=>x.id===id);db.leads[idx]=item}else db.leads.push(item);
+ closeModal('leadModal');persist();toast('Lead guardado!');
+}
+function deleteLeadModal(){
+ let id=document.getElementById('leadId').value;
+ if(removeItem('leads', id, 'Lead excluído!')) closeModal('leadModal');
+}
 
-    function pararCamera() {
-        if (html5QrCode && html5QrCode.isScanning) {
-            html5QrCode.stop().then(() => {
-                html5QrCode.clear();
-            }).catch(err => {
-                console.error("Erro ao parar a câmara", err);
-            });
-        }
-        document.getElementById("reader").style.display = "none";
-        document.getElementById("btn-start-camera").style.display = "block";
-        document.getElementById("btn-stop-camera").style.display = "none";
-    }
+// CLIENTES
+function openClient(id=''){
+ let x=db.clients.find(a=>a.id===id)||{};
+ document.getElementById('cId').value=x.id||'';
+ document.getElementById('cCompany').value=x.company||'';
+ document.getElementById('cContact').value=x.contact||'';
+ document.getElementById('cPhone').value=x.phone||'';
+ document.getElementById('cEmail').value=x.email||'';
+ document.getElementById('cPlan').value=x.plan||'';
+ document.getElementById('cMonthly').value=x.monthly||'';
+ document.getElementById('cStatus').value=x.status||'Ativo';
+ document.getElementById('cColor').value=x.color||'#2563eb';
+ document.getElementById('btnDeleteClient').style.display = x.id ? 'inline-block' : 'none';
+ openModal('clientModal');
+}
+function saveClient(){
+ let id=document.getElementById('cId').value;
+ let item={id:id||uid(),company:document.getElementById('cCompany').value,contact:document.getElementById('cContact').value,phone:document.getElementById('cPhone').value,email:document.getElementById('cEmail').value,plan:document.getElementById('cPlan').value,monthly:Number(document.getElementById('cMonthly').value||0),status:document.getElementById('cStatus').value,color:document.getElementById('cColor').value};
+ if(!item.company)return toast('Informe a empresa!');
+ if(id){let idx=db.clients.findIndex(x=>x.id===id);db.clients[idx]=item}else db.clients.push(item);
+ closeModal('clientModal');persist();toast('Cliente guardado!');
+}
+function deleteClientModal(){
+ let id=document.getElementById('cId').value;
+ if(removeItem('clients', id, 'Cliente excluído!')) closeModal('clientModal');
+}
 
-    // --- Salvar Produto ---
-    function salvarProduto(event) {
-        event.preventDefault();
+// TAREFAS
+function openTask(id=''){
+ let x=db.tasks.find(a=>a.id===id)||{};
+ document.getElementById('tId').value=x.id||'';
+ document.getElementById('tTitle').value=x.title||'';
+ document.getElementById('tOwner').value=x.owner||'';
+ document.getElementById('tDate').value=x.date||'';
+ document.getElementById('tPriority').value=x.priority||'Média';
+ document.getElementById('tStatus').value=x.status||'A fazer';
+ document.getElementById('btnDeleteTask').style.display = x.id ? 'inline-block' : 'none';
+ openModal('taskModal');
+}
+function saveTask(){
+ let id=document.getElementById('tId').value;
+ let item={id:id||uid(),title:document.getElementById('tTitle').value,owner:document.getElementById('tOwner').value,date:document.getElementById('tDate').value,priority:document.getElementById('tPriority').value,status:document.getElementById('tStatus').value};
+ if(!item.title)return toast('Informe o título!');
+ if(id){let idx=db.tasks.findIndex(x=>x.id===id);db.tasks[idx]=item}else db.tasks.push(item);
+ closeModal('taskModal');persist();toast('Tarefa guardada!');
+}
+function deleteTaskModal(){
+ let id=document.getElementById('tId').value;
+ if(removeItem('tasks', id, 'Tarefa excluída!')) closeModal('taskModal');
+}
 
-        const dataAtual = new Date().toLocaleDateString('pt-PT');
+// CONTEÚDO
+function openContent(id=''){
+ fillClients('pClient');
+ let selectNet=document.getElementById('pNetwork');
+ selectNet.innerHTML=Object.keys(networks).map(n=>`<option value="${n}">${n}</option>`).join('');
+ let x=db.contents.find(a=>a.id===id)||{};
+ document.getElementById('pId').value=x.id||'';
+ document.getElementById('pClient').value=x.clientId||'';
+ document.getElementById('pNetwork').value=x.network||'Instagram';
+ document.getElementById('pTitle').value=x.title||'';
+ document.getElementById('pText').value=x.text||'';
+ document.getElementById('pDate').value=x.date||'';
+ document.getElementById('pOwner').value=x.owner||'';
+ document.getElementById('pStage').value=x.stage||'Briefing';
+ document.getElementById('pFormat').value=x.format||'';
+ document.getElementById('btnDeleteContent').style.display = x.id ? 'inline-block' : 'none';
+ openModal('contentModal');
+}
+function saveContent(){
+ let id=document.getElementById('pId').value;
+ let item={id:id||uid(),clientId:document.getElementById('pClient').value,network:document.getElementById('pNetwork').value,title:document.getElementById('pTitle').value,text:document.getElementById('pText').value,date:document.getElementById('pDate').value,owner:document.getElementById('pOwner').value,stage:document.getElementById('pStage').value,format:document.getElementById('pFormat').value,approval:id?(db.contents.find(x=>x.id===id)?.approval||'Pendente'):'Pendente'};
+ if(!item.title)return toast('Informe o título!');
+ if(id){let idx=db.contents.findIndex(x=>x.id===id);db.contents[idx]=item}else db.contents.push(item);
+ closeModal('contentModal');persist();toast('Conteúdo guardado!');
+}
+function deleteContentModal(){
+ let id=document.getElementById('pId').value;
+ if(removeItem('contents', id, 'Conteúdo excluído!')) closeModal('contentModal');
+}
 
-        const produto = {
-            codigo: document.getElementById("codigo").value,
-            descricao: document.getElementById("descricao").value,
-            categoria: document.getElementById("categoria").value,
-            marca: document.getElementById("marca").value,
-            quantidade: document.getElementById("quantidade").value,
-            corredor: document.getElementById("corredor").value,
-            prateleira: document.getElementById("prateleira").value,
-            posicao: document.getElementById("posicao").value,
-            compra: document.getElementById("compra").value,
-            venda: document.getElementById("venda").value,
-            data: dataAtual
-        };
+// MÉTRICAS
+function openMetric(){
+ fillContentSelect('metricContent');
+ openModal('metricModal');
+}
+function fillContentSelect(id){
+ document.getElementById(id).innerHTML=db.contents.map(c=>`<option value="${c.id}">${esc(c.title)} (${c.network})</option>`).join('');
+}
+function saveMetric(){
+ let item={id:uid(),contentId:document.getElementById('metricContent').value,reach:Number(document.getElementById('metricReach').value||0),eng:Number(document.getElementById('metricEng').value||0),leads:Number(document.getElementById('metricLeads').value||0),conv:Number(document.getElementById('metricConv').value||0)};
+ db.metrics.push(item);closeModal('metricModal');persist();toast('Resultado guardado!');
+}
 
-        const transaction = db.transaction([storeName], "readwrite");
-        const store = transaction.objectStore(storeName);
-        const request = store.put(produto);
+// FINANCEIRO
+function openFinance(){openModal('financeModal')}
+function saveFinance(){
+ let item={id:uid(),date:document.getElementById('finDate').value,type:document.getElementById('finType').value,desc:document.getElementById('finDesc').value,value:Number(document.getElementById('finValue').value||0),status:document.getElementById('finStatus').value};
+ if(!item.desc)return toast('Informe a descrição!');
+ db.finance.push(item);closeModal('financeModal');persist();toast('Lançamento guardado!');
+}
 
-        request.onsuccess = () => {
-            alert("Produto cadastrado com sucesso!");
-            document.getElementById("product-form").reset();
-            carregarProdutos();
-        };
+// EQUIPE
+function openMember(){openModal('memberModal')}
+function saveMember(){
+ let item={id:uid(),name:document.getElementById('memName').value,role:document.getElementById('memRole').value,email:document.getElementById('memEmail').value,status:document.getElementById('memStatus').value};
+ if(!item.name)return toast('Informe o nome!');
+ db.team.push(item);closeModal('memberModal');persist();toast('Membro guardado!');
+}
 
-        request.onerror = (event) => {
-            alert("Erro ao salvar produto: " + event.target.error);
-        };
-    }
+// MÍDIA
+function addMedia(e){
+ let file=e.target.files[0];
+ if(!file)return;
+ let reader=new FileReader();
+ reader.onload=function(event){
+  db.media.push({id:uid(),url:event.target.result,name:file.name,date:new Date().toLocaleDateString()});
+  persist();toast('Mídia adicionada!');
+ };
+ reader.readAsDataURL(file);
+}
 
-    // --- Carregar e Listar Produtos ---
-    function carregarProdutos(filtro = "") {
-        if (!db) return;
-        const transaction = db.transaction([storeName], "readonly");
-        const store = transaction.objectStore(storeName);
-        const request = store.getAll();
+// STUDIO SOCIAL
+function updateFormats(){
+ let net=document.getElementById('stNetwork').value;
+ let fmtSelect=document.getElementById('stFormat');
+ fmtSelect.innerHTML=Object.keys(networks[net]||{}).map(f=>`<option value="${f}">${f}</option>`).join('');
+ updateStudio();
+}
+function updateStudio(){
+ let net=document.getElementById('stNetwork').value;
+ let fmt=document.getElementById('stFormat').value;
+ let size=networks[net]?.[fmt]||[1080,1080];
+ document.getElementById('stSize').value=`${size[0]} x ${size[1]} px`;
+ 
+ let title=document.getElementById('stTitle').value||'Título da arte';
+ let body=document.getElementById('stBody').value||'A visualização muda enquanto você escreve.';
+ let bg=document.getElementById('stBg').value;
+ let textColor=document.getElementById('stTextColor').value;
+ let caption=document.getElementById('stCaption').value||'Legenda da publicação';
+ let cta=document.getElementById('stCta').value;
+ let clientEl=document.getElementById('stClient');
+ let clientText=clientEl.options[clientEl.selectedIndex]?.text||'Genesis Marketing';
 
-        request.onsuccess = (event) => {
-            const produtos = event.target.result;
-            const tbody = document.querySelector("#tabela-produtos tbody");
-            tbody.innerHTML = "";
+ document.getElementById('pvClient').textContent=clientText;
+ document.getElementById('pvNetwork').textContent=net;
+ document.getElementById('pvTitle').textContent=title;
+ document.getElementById('pvBody').textContent=body;
+ document.getElementById('pvCaption').textContent=caption;
+ document.getElementById('pvCta').textContent=cta;
 
-            const produtosFiltrados = produtos.filter(p => 
-                p.codigo.toLowerCase().includes(filtro.toLowerCase()) ||
-                p.descricao.toLowerCase().includes(filtro.toLowerCase()) ||
-                p.marca.toLowerCase().includes(filtro.toLowerCase())
-            );
+ let creative=document.getElementById('creative');
+ creative.style.backgroundColor=bg;
+ creative.style.color=textColor;
+}
 
-            produtosFiltrados.forEach(p => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td>${p.codigo}</td>
-                    <td>${p.descricao}</td>
-                    <td>${p.categoria}</td>
-                    <td>${p.marca}</td>
-                    <td>${p.quantidade}</td>
-                    <td>${p.corredor}</td>
-                    <td>${p.prateleira}</td>
-                    <td>${p.posicao}</td>
-                    <td>${p.compra}</td>
-                    <td>${p.venda}</td>
-                    <td>${p.data}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        };
-    }
+document.querySelectorAll('#stTitle,#stBody,#stCaption,#stCta,#stBg,#stTextColor,#stClient').forEach(el=>{
+ el?.addEventListener('input',updateStudio);
+});
 
-    // --- Pesquisa ---
-    function pesquisarProdutos() {
-        const termo = document.getElementById("pesquisa").value;
-        carregarProdutos(termo);
-    }
+function sendStudioToPipeline(){
+ let net=document.getElementById('stNetwork').value;
+ let title=document.getElementById('stTitle').value||'Arte Social Studio';
+ let body=document.getElementById('stBody').value;
+ let caption=document.getElementById('stCaption').value;
+ let clientId=document.getElementById('stClient').value;
+ let fmt=document.getElementById('stFormat').value;
 
-    // --- Exportar para CSV ---
-    function exportarCSV() {
-        const transaction = db.transaction([storeName], "readonly");
-        const store = transaction.objectStore(storeName);
-        const request = store.getAll();
+ db.contents.push({
+  id:uid(),clientId:clientId,network:net,title:title,text:`[ARTE]: ${body}\n\n[LEGENDA]: ${caption}`,
+  date:new Date().toISOString().split('T')[0],owner:'Social Studio',stage:'Produção',format:fmt,approval:'Pendente'
+ });
+ persist();toast('Arte enviada para o Pipeline de Conteúdo!');
+}
 
-        request.onsuccess = (event) => {
-            const produtos = event.target.result;
-            if (produtos.length === 0) {
-                alert("Nenhum produto cadastrado para exportar.");
-                return;
-            }
+// IA ASSISTENTE
+function generateAI(){
+ let g=document.getElementById('aiGoal').value, s=document.getElementById('aiSegment').value, t=document.getElementById('aiTopic').value, tm=document.getElementById('aiTone').value;
+ let out=`🎯 PLANO DE CONTEÚDO IA\n-------------------------\nObjetivo: ${g}\nSegmento: ${s||'Geral'}\nTema: ${t||'Institucional'}\nTom de Voz: ${tm}\n\n1. GANCHO (0-3s):\n"Você sabia que ${t||'este detalhe'} pode mudar os seus resultados?"\n\n2. DESENVOLVIMENTO:\n- Ponto 1: O problema principal enfrentado no setor de ${s||'negócios'}.\n- Ponto 2: Como a solução ideal funciona na prática.\n- Ponto 3: A transformação imediata obtida.\n\n3. CHAMADA PARA AÇÃO (CTA):\n"Comente 'QUERO' ou clique no link da bio para saber mais!"`;
+ document.getElementById('aiOutput').value=out;
+}
+function copyAI(){
+ navigator.clipboard.writeText(document.getElementById('aiOutput').value);
+ toast('Copiado para a área de transferência!');
+}
 
-            let csvContent = "Código,Produto,Categoria,Marca,Quantidade,Corredor,Prateleira,Posição,Compra,Venda,Data\n";
+// CALENDÁRIO
+function changeMonth(dir){calDate.setMonth(calDate.getMonth()+dir);renderCalendar()}
 
-            produtos.forEach(p => {
-                let linha = [
-                    `"${p.codigo}"`,
-                    `"${p.descricao}"`,
-                    `"${p.categoria}"`,
-                    `"${p.marca}"`,
-                    p.quantidade,
-                    `"${p.corredor}"`,
-                    `"${p.prateleira}"`,
-                    `"${p.posicao}"`,
-                    p.compra,
-                    p.venda,
-                    `"${p.data}"`
-                ].join(",");
-                csvContent += linha + "\n";
-            });
+// RENDERIZADORES
+function renderAll(){
+ document.body.className=`role-${db.role}`;
+ document.getElementById('rolePill').textContent=db.role==='admin'?'Administrador':'Cliente Final';
+ document.body.setAttribute('data-theme',db.theme||'light');
+ document.getElementById('adminName').value=db.agency.name||'';
+ document.getElementById('adminPhone').value=db.agency.phone||'';
+ document.getElementById('adminEmail').value=db.agency.email||'';
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.setAttribute("href", url);
-            a.setAttribute("download", "estoque_enriqueta.csv");
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        };
-    }
+ renderDashboard();
+ renderCRM();
+ renderClients();
+ renderTasks();
+ renderContents();
+ renderCalendar();
+ renderMedia();
+ renderApprovals();
+ renderPublishing();
+ renderMetrics();
+ renderFinance();
+ renderTeam();
+ fillClients('stClient');
+ if(Object.keys(networks).length) {
+  let selectNet=document.getElementById('stNetwork');
+  if(!selectNet.innerHTML) selectNet.innerHTML=Object.keys(networks).map(n=>`<option value="${n}">${n}</option>`).join('');
+ }
+}
+
+function renderDashboard(){
+ let activeClients=db.clients.filter(c=>c.status==='Ativo');
+ let revenue=activeClients.reduce((acc,c)=>acc+Number(c.monthly||0),0);
+ document.getElementById('sRevenue').textContent=money(revenue);
+ document.getElementById('sClients').textContent=activeClients.length;
+ document.getElementById('sContent').textContent=db.contents.length;
+ document.getElementById('sApproval').textContent=db.contents.filter(c=>c.approval==='Pendente').length;
+ document.getElementById('sConversions').textContent=db.metrics.reduce((a,b)=>a+Number(b.conv||0),0);
+
+ document.getElementById('weekOps').innerHTML=db.tasks.length?db.tasks.slice(0,5).map(t=>`<div style="padding:8px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between"><span>${esc(t.title)}</span><span class="badge ${t.status==='Concluído'?'ok':'warn'}">${t.status}</span></div>`).join(''):'<div class="empty">Sem tarefas registradas</div>';
+ document.getElementById('agencyHealth').innerHTML=`<p><b>Projetos em dia:</b> ${db.tasks.filter(t=>t.status==='Concluído').length} / ${db.tasks.length}</p><p><b>Aprovações pendentes:</b> ${db.contents.filter(c=>c.approval==='Pendente').length}</p>`;
+ document.getElementById('funnelMini').innerHTML=leadStages.map(st=>`<div><small>${st}</small>: <b>${db.leads.filter(l=>l.stage===st).length}</b></div>`).join('');
+ document.getElementById('deliveriesMini').innerHTML=db.contents.slice(0,3).map(c=>`<div>• ${esc(c.title)} (${c.date||'Sem data'})</div>`).join('')||'<div class="empty">Sem entregas</div>';
+ document.getElementById('financeMini').innerHTML=`<small>Receita total:</small> <b>${money(db.finance.filter(f=>f.type==='Receita').reduce((a,b)=>a+Number(b.value||0),0))}</b>`;
+}
+
+function renderCRM(){
+ let pipe=document.getElementById('crmPipeline');
+ pipe.innerHTML=leadStages.map(st=>{
+  let list=db.leads.filter(l=>l.stage===st);
+  return `<div class="col"><h4><span>${st}</span> <span class="badge">${list.length}</span></h4>${list.map(l=>`<div class="item"><b>${esc(l.company)}</b><div class="meta">${esc(l.contact)} | ${money(l.value)}</div><div class="item-actions"><button class="btn small" onclick="openLead('${l.id}')">Editar</button><button class="btn small danger" onclick="removeItem('leads','${l.id}','Lead excluído!')">Excluir</button></div></div>`).join('')}</div>`;
+ }).join('');
+}
+
+function renderClients(){
+ let q=(document.getElementById('clientSearch')?.value||'').toLowerCase();
+ let rows=document.getElementById('clientRows');
+ let filtered=db.clients.filter(c=>c.company.toLowerCase().includes(q)||c.contact.toLowerCase().includes(q));
+ rows.innerHTML=filtered.map(c=>`<tr><td><b>${esc(c.company)}</b></td><td>${esc(c.contact)}</td><td>${esc(c.plan)}</td><td>${money(c.monthly)}</td><td><span class="badge ${c.status==='Ativo'?'ok':'warn'}">${c.status}</span></td><td><button class="btn small" onclick="openClient('${c.id}')">Editar</button> <button class="btn small danger" onclick="removeItem('clients','${c.id}','Cliente excluído!')">Excluir</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">Nenhum cliente encontrado</td></tr>';
+}
+
+function renderTasks(){
+ let cols=document.getElementById('taskColumns');
+ let statuses=['A fazer','Em andamento','Concluído'];
+ cols.innerHTML=statuses.map(st=>{
+  let list=db.tasks.filter(t=>t.status===st);
+  return `<div class="card"><h3>${st} (${list.length})</h3>${list.map(t=>`<div class="item"><b>${esc(t.title)}</b><div class="meta">Resp: ${esc(t.owner||'N/A')} | Prazo: ${t.date||'N/A'}</div><div class="item-actions"><button class="btn small" onclick="openTask('${t.id}')">Editar</button><button class="btn small danger" onclick="removeItem('tasks','${t.id}','Tarefa excluída!')">Excluir</button></div></div>`).join('')}</div>`;
+ }).join('');
+}
+
+function renderContents(){
+ let pipe=document.getElementById('contentPipeline');
+ pipe.innerHTML=contentStages.map(st=>{
+  let list=db.contents.filter(c=>c.stage===st);
+  return `<div class="col"><h4><span>${st}</span> <span class="badge">${list.length}</span></h4>${list.map(c=>`<div class="item"><b>${esc(c.title)}</b><div class="meta">${clientName(c.clientId)} | ${c.network}</div><div class="item-actions"><button class="btn small" onclick="openContent('${c.id}')">Editar</button><button class="btn small danger" onclick="removeItem('contents','${c.id}','Conteúdo excluído!')">Excluir</button></div></div>`).join('')}</div>`;
+ }).join('');
+}
+
+function renderCalendar(){
+ let cal=document.getElementById('calendar');
+ let year=calDate.getFullYear(), month=calDate.getMonth();
+ document.getElementById('monthTitle').textContent=new Date(year,month).toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+ let daysInMonth=new Date(year,month+1,0).getDate();
+ let html='<div class="day-name">Dom</div><div class="day-name">Seg</div><div class="day-name">Ter</div><div class="day-name">Qua</div><div class="day-name">Qui</div><div class="day-name">Sex</div><div class="day-name">Sáb</div>';
+ for(let d=1; d<=daysInMonth; d++){
+  let dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  let items=db.contents.filter(c=>c.date===dateStr);
+  html+=`<div class="day"><b>${d}</b>${items.map(i=>`<div class="cal-item">${esc(i.title)}</div>`).join('')}</div>`;
+ }
+ cal.innerHTML=html;
+}
+
+function renderMedia(){
+ let grid=document.getElementById('mediaGrid');
+ grid.innerHTML=db.media.map(m=>`<div class="media-card"><div class="media-thumb" style="background-image:url('${m.url}')"></div><div class="media-info"><small>${esc(m.name)}</small><br><button class="btn small danger" style="margin-top:5px;width:100%" onclick="removeItem('media','${m.id}','Mídia excluída!')">Excluir</button></div></div>`).join('')||'<div class="empty full">Nenhuma mídia guardada</div>';
+}
+
+function renderApprovals(){
+ let list=document.getElementById('approvalList');
+ let pending=db.contents.filter(c=>c.stage==='Aprovação'||c.approval==='Pendente');
+ list.innerHTML=pending.map(c=>`<div class="card item approval ${c.approval==='Aprovado'?'approved':''}"><div style="display:flex;justify-content:space-between;align-items:center"><div><h3>${esc(c.title)}</h3><p>${clientName(c.clientId)} • ${c.network}</p><p class="meta">${esc(c.text)}</p></div><div><button class="btn success" onclick="setApproval('${c.id}','Aprovado')">Aprovar</button> <button class="btn danger" onclick="setApproval('${c.id}','Rejeitado')">Rejeitar</button></div></div></div>`).join('')||'<div class="empty">Sem aprovações pendentes</div>';
+}
+function setApproval(id,status){
+ let idx=db.contents.findIndex(c=>c.id===id);
+ if(idx>-1){db.contents[idx].approval=status; if(status==='Aprovado') db.contents[idx].stage='Publicado'; persist(); toast(`Status: ${status}`);}
+}
+
+function renderPublishing(){
+ let list=document.getElementById('publishList');
+ let ready=db.contents.filter(c=>c.stage==='Publicado'||c.approval==='Aprovado');
+ list.innerHTML=ready.map(c=>`<div style="padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center"><div><b>${esc(c.title)}</b><br><small>${c.network} - ${c.date||'Sem data'}</small></div><span class="badge ok">Pronto para publicar</span></div>`).join('')||'<div class="empty">Nenhum conteúdo pronto para publicação</div>';
+}
+
+function renderMetrics(){
+ let rows=document.getElementById('metricRows');
+ let totalReach=0, totalEng=0, totalLeads=0, totalConv=0;
+ rows.innerHTML=db.metrics.map(m=>{
+  totalReach+=m.reach; totalEng+=m.eng; totalLeads+=m.leads; totalConv+=m.conv;
+  let content=db.contents.find(c=>c.id===m.contentId);
+  return `<tr><td>${esc(content?.title||'N/A')}</td><td>${m.reach}</td><td>${m.eng}</td><td>${m.leads}</td><td>${m.conv}</td><td><button class="btn small danger" onclick="removeItem('metrics','${m.id}','Resultado excluído!')">Excluir</button></td></tr>`;
+ }).join('')||'<tr><td colspan="6" class="empty">Sem métricas registradas</td></tr>';
+
+ document.getElementById('mReachTotal').textContent=totalReach;
+ document.getElementById('mEngTotal').textContent=totalEng;
+ document.getElementById('mLeadsTotal').textContent=totalLeads;
+ document.getElementById('mConvTotal').textContent=totalConv;
+ document.getElementById('mRate').textContent=totalReach?((totalConv/totalReach)*100).toFixed(1)+'%':'0%';
+
+ let chart=document.getElementById('metricChart');
+ chart.innerHTML=db.metrics.slice(-6).map(m=>`<div class="bar" style="height:${Math.min(100,m.reach/10)}%">${m.reach}<span>${m.reach}</span></div>`).join('');
+}
+
+function renderFinance(){
+ let rows=document.getElementById('financeRows');
+ let income=0, expense=0, pending=0;
+ rows.innerHTML=db.finance.map(f=>{
+  if(f.type==='Receita') income+=f.value; else expense+=f.value;
+  if(f.status==='Pendente') pending+=f.value;
+  return `<tr><td>${f.date}</td><td>${esc(f.desc)}</td><td><span class="badge ${f.type==='Receita'?'ok':'red'}">${f.type}</span></td><td>${f.status}</td><td>${money(f.value)}</td><td><button class="btn small danger" onclick="removeItem('finance','${f.id}','Lançamento excluído!')">Excluir</button></td></tr>`;
+ }).join('')||'<tr><td colspan="6" class="empty">Sem lançamentos financeiros</td></tr>';
+
+ document.getElementById('fIncome').textContent=money(income);
+ document.getElementById('fExpense').textContent=money(expense);
+ document.getElementById('fBalance').textContent=money(income-expense);
+ document.getElementById('fPending').textContent=money(pending);
+}
+
+function renderTeam(){
+ let grid=document.getElementById('teamGrid');
+ grid.innerHTML=db.team.map(m=>`<div class="card"><h3>${esc(m.name)}</h3><p><b>Função:</b> ${m.role}</p><p class="meta">${esc(m.email)}</p><p><span class="badge ${m.status==='Ativo'?'ok':'warn'}">${m.status}</span></p><button class="btn small danger" onclick="removeItem('team','${m.id}','Membro excluído!')">Excluir</button></div>`).join('')||'<div class="empty full">Nenhum membro na equipa</div>';
+}
+
+// ADMINISTRADOR E DADOS
+function saveAdmin(){
+ db.agency.name=document.getElementById('adminName').value;
+ db.agency.phone=document.getElementById('adminPhone').value;
+ db.agency.email=document.getElementById('adminEmail').value;
+ document.getElementById('brandName').textContent=db.agency.name||'Genesis Marketing';
+ persist();toast('Configurações guardadas!');
+}
+
+function exportData(){
+ let dataStr="data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+ let downloadAnchor=document.createElement('a');
+ downloadAnchor.setAttribute("href", dataStr);
+ downloadAnchor.setAttribute("download", `genesis_backup_${new Date().toISOString().split('T')[0]}.json`);
+ document.body.appendChild(downloadAnchor);
+ downloadAnchor.click();
+ downloadAnchor.remove();
+}
+
+function importData(e){
+ let file=e.target.files[0];
+ if(!file)return;
+ let reader=new FileReader();
+ reader.onload=function(event){
+  try{
+   db=JSON.parse(event.target.result);
+   persist();toast('Dados importados com sucesso!');
+  }catch(err){
+   toast('Ficheiro JSON inválido!');
+  }
+ };
+ reader.readAsText(file);
+}
+
+function resetData(){
+ if(confirm('ATENÇÃO: Deseja apagar todos os dados do sistema? Esta ação não pode ser desfeita.')){
+  localStorage.removeItem(KEY);
+  location.reload();
+ }
+}
+
+function seed(){
+ db.clients=[{id:'c1',company:'Padaria Central',contact:'João Silva',phone:'11999999999',email:'joao@padaria.com',plan:'Pro',monthly:1500,status:'Ativo',color:'#2563eb'}];
+ db.leads=[{id:'l1',company:'Oficina Mecânica Precision',contact:'Carlos',phone:'11988888888',value:2000,stage:'Proposta',next:'Enviar contrato'}];
+ db.tasks=[{id:'t1',title:'Criar artes da semana',owner:'Ana',date:'2026-08-10',priority:'Alta',status:'Em andamento'}];
+ db.contents=[{id:'p1',clientId:'c1',network:'Instagram',title:'Promoção Pão Francês',text:'Pão quentinho toda hora!',date:'2026-08-05',owner:'Ana',stage:'Aprovação',format:'Post quadrado',approval:'Pendente'}];
+ persist();toast('Dados de demonstração carregados!');
+}
+
+// INICIALIZAÇÃO
+renderAll();
 </script>
-
 </body>
 </html>
